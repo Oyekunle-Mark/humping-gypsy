@@ -105,7 +105,7 @@ func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	path = path[1:]
 
 	if chapter, ok := h.s[path]; ok {
-		err := tmpl.Execute(w, chapter)
+		err := h.t.Execute(w, chapter)
 
 		if err != nil {
 			log.Printf("%v", err)
