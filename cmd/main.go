@@ -21,7 +21,7 @@ func main() {
 		panic(err)
 	}
 
-	story, err := gypsy.JsonStory(f)
+	story, err := gypsy.JSONStory(f)
 
 	if err != nil {
 		panic(err)

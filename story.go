@@ -86,7 +86,8 @@ type Option struct {
 	Arc  string `json:"arc"`
 }
 
-func JsonStory(r io.Reader) (Story, error) {
+// JSONStory decodes the io reader and returns a story map
+func JSONStory(r io.Reader) (Story, error) {
 	d := json.NewDecoder(r)
 
 	var story Story
