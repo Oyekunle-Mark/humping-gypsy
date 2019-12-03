@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
+	"strings"
 )
 
 var defaultHanldlerTmpl = `
@@ -46,11 +48,26 @@ type handler struct {
 }
 
 func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	err := tmpl.Execute(w, h.s["intro"])
+	path := strings.TrimSpace(r.URL.Path)
 
-	if err != nil {
-		panic(err)
+	if path == "" || path == "/" {
+		path = "/intro"
 	}
+
+	path = path[1:]
+
+	if chapter, ok := h.s[path]; ok {
+		err := tmpl.Execute(w, chapter)
+
+		if err != nil {
+			log.Printf("%v", err)
+			http.Error(w, "Something broke...", http.StatusInternalServerError)
+		}
+
+		return
+	}
+
+	http.Error(w, "Cannot find chapter.", http.StatusNotFound)
 }
 
 // Story the story type
