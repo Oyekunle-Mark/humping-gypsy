@@ -82,12 +82,17 @@ func init() {
 var tmpl *template.Template
 
 // NewHandler returns a type that implements htt.Handler
-func NewHandler(s Story) http.Handler {
-	return handler{s}
+func NewHandler(s Story, t *template.Template) http.Handler {
+	if t == nil {
+		t = tmpl
+	}
+
+	return handler{s, t}
 }
 
 type handler struct {
 	s Story
+	t *template.Template
 }
 
 func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
