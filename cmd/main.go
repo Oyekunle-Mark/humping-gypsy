@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -19,11 +18,9 @@ func main() {
 		panic(err)
 	}
 
-	d := json.NewDecoder(f)
+	story, err := gypsy.JsonStory(f)
 
-	var story gypsy.Story
-
-	if err := d.Decode(&story); err != nil {
+	if err != nil {
 		panic(err)
 	}
 
