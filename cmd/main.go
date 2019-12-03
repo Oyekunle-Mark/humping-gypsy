@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
+
+	gypsy "github.com/Oyekunle-Mark/humping-gypsy"
 )
 
 func main() {
@@ -13,8 +16,16 @@ func main() {
 	f, err := os.Open(*filename)
 
 	if err != nil {
-		panic("Cannot read file")
+		panic(err)
 	}
 
-	fmt.Println(f)
+	d := json.NewDecoder(f)
+
+	var story gypsy.Story
+
+	if err := d.Decode(&story); err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%+v", story)
 }
