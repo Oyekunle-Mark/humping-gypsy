@@ -27,5 +27,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("%+v", story)
+	fmt.Printf("%+v\n", story)
 }
