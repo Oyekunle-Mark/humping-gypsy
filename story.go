@@ -2,7 +2,9 @@ package gypsy
 
 import (
 	"encoding/json"
+	"html/template"
 	"io"
+	"net/http"
 )
 
 var defaultHanldlerTmpl = `
@@ -27,6 +29,29 @@ var defaultHanldlerTmpl = `
   </body>
 </html>
 `
+
+func init() {
+	tmpl = template.Must(template.New("").Parse(defaultHanldlerTmpl))
+}
+
+var tmpl *template.Template
+
+// NewHandler returns a type that implements htt.Handler
+func NewHandler(s Story) http.Handler {
+	return handler{s}
+}
+
+type handler struct {
+	s Story
+}
+
+func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	err := tmpl.Execute(w, h.s["intro"])
+
+	if err != nil {
+		panic(err)
+	}
+}
 
 // Story the story type
 type Story map[string]Chapter
