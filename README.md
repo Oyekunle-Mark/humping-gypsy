@@ -1,3 +1,3 @@
-# humping-gypsy
+# random-gypsy
 
 An adventure game
