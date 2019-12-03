@@ -81,13 +81,23 @@ func init() {
 
 var tmpl *template.Template
 
+type HandlerOpt func(h *handler)
+
+func WithTemplate(t *template.Template) HandlerOpt {
+	return func(h *handler) {
+		h.t = t
+	}
+}
+
 // NewHandler returns a type that implements htt.Handler
-func NewHandler(s Story, t *template.Template) http.Handler {
-	if t == nil {
-		t = tmpl
+func NewHandler(s Story, opts ...HandlerOpt) http.Handler {
+	h := handler{s, tmpl}
+
+	for _, opt := range opts {
+		opt(&h)
 	}
 
-	return handler{s, t}
+	return h
 }
 
 type handler struct {

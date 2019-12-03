@@ -27,7 +27,7 @@ func main() {
 		panic(err)
 	}
 
-	h := gypsy.NewHandler(story, nil)
+	h := gypsy.NewHandler(story)
 
 	fmt.Printf("Starting the app on port: %d\n", *port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), h))
